@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "k8s-troubleshooting-lab.fullname" . }}-oom
+  name: {{ include "k8s-troubleshooting-lab.fullname" . }}-webapiapp
   namespace: {{ include "k8s-troubleshooting-lab.namespace" . }}
   labels:
     {{- include "k8s-troubleshooting-lab.labels" . | nindent 4 }}
