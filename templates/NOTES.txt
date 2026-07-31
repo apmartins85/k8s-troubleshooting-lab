@@ -3,8 +3,8 @@ Troubleshooting lab installed.
 Expected states after 1-2 minutes:
   - nginx: Running / Ready
   - redis: Running / Ready
-  - o9-app: o9-appBackOff
-  - webapi-app: o9-appBackOff, previous termination reason OOMKilled
+  - o9app: o9appBackOff
+  - webapiapp: o9appBackOff, previous termination reason OOMKilled
   - mongodb: Pending because PVC {{ .Values.mongoDb.claimName }} does not exist
 
 Useful commands:

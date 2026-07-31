@@ -1,31 +1,31 @@
-{{- if .Values.o9-app.enabled }}
+{{- if .Values.o9app.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "k8s-troubleshooting-lab.fullname" . }}-o9-app
+  name: {{ include "k8s-troubleshooting-lab.fullname" . }}-o9app
   namespace: {{ include "k8s-troubleshooting-lab.namespace" . }}
   labels:
     {{- include "k8s-troubleshooting-lab.labels" . | nindent 4 }}
-    app.kubernetes.io/name: o9-app
+    app.kubernetes.io/name: o9app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: o9-app
+      app.kubernetes.io/name: o9app
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: o9-app
+        app.kubernetes.io/name: o9app
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
-        - name: o9-app
-          image: {{ .Values.o9-app.image | quote }}
+        - name: o9app
+          image: {{ .Values.o9app.image | quote }}
           command: ["sh", "-c"]
           args:
             - >-
-              echo {{ .Values.o9-app.message | quote }};
+              echo {{ .Values.o9app.message | quote }};
               echo "Configuration file /etc/example/app.conf not found";
               sleep 3;
               exit 1

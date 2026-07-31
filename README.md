@@ -8,8 +8,8 @@ A small Helm chart designed for Killercoda or any disposable Kubernetes cluster.
 |---|---|---|
 | NGINX | Running | Healthy web service |
 | Redis | Running | Healthy cache service |
-| o9-app | o9-appBackOff | Container exits with code 1 after reporting a missing configuration file |
-| webapi-app | o9-appBackOff | Python allocates more memory than its 32 MiB limit and is OOMKilled |
+| o9app | o9appBackOff | Container exits with code 1 after reporting a missing configuration file |
+| webapiapp | o9appBackOff | Python allocates more memory than its 32 MiB limit and is OOMKilled |
 | MongoDB | Pending | Pod references a PVC that intentionally does not exist |
 
 ## Install in Killercoda
@@ -41,19 +41,19 @@ kubectl logs -n troubleshooting-lab <pod-name> --previous
 Check the OOMKilled reason:
 
 ```bash
-OOM_POD=$(kubectl get pod -n troubleshooting-lab -l app.kubernetes.io/name=webapi-app -o jsonpath='{.items[0].metadata.name}')
+OOM_POD=$(kubectl get pod -n troubleshooting-lab -l app.kubernetes.io/name=webapiapp -o jsonpath='{.items[0].metadata.name}')
 kubectl get pod -n troubleshooting-lab "$OOM_POD" \
   -o jsonpath='{.status.containerStatuses[0].lastState.terminated.reason}{"\n"}'
 ```
 
 ## Fix exercises
 
-### o9-appBackOff
+### o9appBackOff
 
 The deployment command deliberately exits with code 1. Inspect the deployment and replace its command with a long-running process, for example:
 
 ```bash
-kubectl edit deployment -n troubleshooting-lab lab-k8s-troubleshooting-lab-o9-app
+kubectl edit deployment -n troubleshooting-lab lab-k8s-troubleshooting-lab-o9app
 ```
 
 Use:
@@ -65,11 +65,11 @@ args: ["echo application started; sleep 3600"]
 
 ### OOMKilled
 
-Increase the memory limit or reduce `webapi-app.allocationMiB`:
+Increase the memory limit or reduce `webapiapp.allocationMiB`:
 
 ```bash
 helm upgrade lab ./k8s-troubleshooting-lab -n troubleshooting-lab \
-  --set webapi-app.memoryLimit=256Mi
+  --set webapiapp.memoryLimit=256Mi
 ```
 
 ### Missing PVC
