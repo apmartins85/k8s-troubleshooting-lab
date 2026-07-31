@@ -1,0 +1,39 @@
+{{- if .Values.outOfMemory.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "k8s-troubleshooting-lab.fullname" . }}-oom
+  namespace: {{ include "k8s-troubleshooting-lab.namespace" . }}
+  labels:
+    {{- include "k8s-troubleshooting-lab.labels" . | nindent 4 }}
+    app.kubernetes.io/name: oom-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: oom-app
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: oom-app
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: oom-app
+          image: {{ .Values.outOfMemory.image | quote }}
+          command: ["python", "-c"]
+          args:
+            - >-
+              import time;
+              print('Allocating memory above the container limit...', flush=True);
+              x = bytearray({{ .Values.outOfMemory.allocationMiB }} * 1024 * 1024);
+              time.sleep(3600)
+          resources:
+            requests:
+              memory: 16Mi
+              cpu: 10m
+            limits:
+              memory: {{ .Values.outOfMemory.memoryLimit }}
+              cpu: 100m
+{{- end }}
