@@ -6,21 +6,21 @@ metadata:
   namespace: {{ include "k8s-troubleshooting-lab.namespace" . }}
   labels:
     {{- include "k8s-troubleshooting-lab.labels" . | nindent 4 }}
-    app.kubernetes.io/name: oom-app
+    app.kubernetes.io/name: webapi-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: oom-app
+      app.kubernetes.io/name: webapi-app
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: oom-app
+        app.kubernetes.io/name: webapi-app
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
-        - name: oom-app
+        - name: webapi-app
           image: {{ .Values.outOfMemory.image | quote }}
           command: ["python", "-c"]
           args:

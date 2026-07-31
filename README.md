@@ -8,8 +8,8 @@ A small Helm chart designed for Killercoda or any disposable Kubernetes cluster.
 |---|---|---|
 | NGINX | Running | Healthy web service |
 | Redis | Running | Healthy cache service |
-| crashloop-app | CrashLoopBackOff | Container exits with code 1 after reporting a missing configuration file |
-| oom-app | CrashLoopBackOff | Python allocates more memory than its 32 MiB limit and is OOMKilled |
+| o9-app | CrashLoopBackOff | Container exits with code 1 after reporting a missing configuration file |
+| webapi-app | CrashLoopBackOff | Python allocates more memory than its 32 MiB limit and is OOMKilled |
 | MongoDB | Pending | Pod references a PVC that intentionally does not exist |
 
 ## Install in Killercoda
@@ -41,7 +41,7 @@ kubectl logs -n troubleshooting-lab <pod-name> --previous
 Check the OOMKilled reason:
 
 ```bash
-OOM_POD=$(kubectl get pod -n troubleshooting-lab -l app.kubernetes.io/name=oom-app -o jsonpath='{.items[0].metadata.name}')
+OOM_POD=$(kubectl get pod -n troubleshooting-lab -l app.kubernetes.io/name=webapi-app -o jsonpath='{.items[0].metadata.name}')
 kubectl get pod -n troubleshooting-lab "$OOM_POD" \
   -o jsonpath='{.status.containerStatuses[0].lastState.terminated.reason}{"\n"}'
 ```

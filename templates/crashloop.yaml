@@ -6,21 +6,21 @@ metadata:
   namespace: {{ include "k8s-troubleshooting-lab.namespace" . }}
   labels:
     {{- include "k8s-troubleshooting-lab.labels" . | nindent 4 }}
-    app.kubernetes.io/name: crashloop-app
+    app.kubernetes.io/name: o9-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: crashloop-app
+      app.kubernetes.io/name: o9-app
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: crashloop-app
+        app.kubernetes.io/name: o9-app
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
-        - name: crashloop-app
+        - name: o9-app
           image: {{ .Values.crashLoop.image | quote }}
           command: ["sh", "-c"]
           args:
