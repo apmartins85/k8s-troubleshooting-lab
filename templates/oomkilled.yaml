@@ -1,4 +1,4 @@
-{{- if .Values.outOfMemory.enabled }}
+{{- if .Values.webapi-app.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,19 +21,19 @@ spec:
     spec:
       containers:
         - name: webapi-app
-          image: {{ .Values.outOfMemory.image | quote }}
+          image: {{ .Values.webapi-app.image | quote }}
           command: ["python", "-c"]
           args:
             - >-
               import time;
               print('Allocating memory above the container limit...', flush=True);
-              x = bytearray({{ .Values.outOfMemory.allocationMiB }} * 1024 * 1024);
+              x = bytearray({{ .Values.webapi-app.allocationMiB }} * 1024 * 1024);
               time.sleep(3600)
           resources:
             requests:
               memory: 16Mi
               cpu: 10m
             limits:
-              memory: {{ .Values.outOfMemory.memoryLimit }}
+              memory: {{ .Values.webapi-app.memoryLimit }}
               cpu: 100m
 {{- end }}

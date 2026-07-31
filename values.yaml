@@ -11,18 +11,18 @@ healthyRedis:
   image: redis:7-alpine
   servicePort: 6379
 
-crashLoop:
+o9-app:
   enabled: true
   image: busybox:1.36
   message: "Simulated application startup failure"
 
-outOfMemory:
+webapi-app:
   enabled: true
   image: python:3.12-alpine
   memoryLimit: 32Mi
   allocationMiB: 128
 
-missingPvc:
+mongoDb:
   enabled: true
   image: mongo:7
   claimName: mongodb-data-missing

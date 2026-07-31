@@ -8,8 +8,8 @@ A small Helm chart designed for Killercoda or any disposable Kubernetes cluster.
 |---|---|---|
 | NGINX | Running | Healthy web service |
 | Redis | Running | Healthy cache service |
-| o9-app | CrashLoopBackOff | Container exits with code 1 after reporting a missing configuration file |
-| webapi-app | CrashLoopBackOff | Python allocates more memory than its 32 MiB limit and is OOMKilled |
+| o9-app | o9-appBackOff | Container exits with code 1 after reporting a missing configuration file |
+| webapi-app | o9-appBackOff | Python allocates more memory than its 32 MiB limit and is OOMKilled |
 | MongoDB | Pending | Pod references a PVC that intentionally does not exist |
 
 ## Install in Killercoda
@@ -48,12 +48,12 @@ kubectl get pod -n troubleshooting-lab "$OOM_POD" \
 
 ## Fix exercises
 
-### CrashLoopBackOff
+### o9-appBackOff
 
 The deployment command deliberately exits with code 1. Inspect the deployment and replace its command with a long-running process, for example:
 
 ```bash
-kubectl edit deployment -n troubleshooting-lab lab-k8s-troubleshooting-lab-crashloop
+kubectl edit deployment -n troubleshooting-lab lab-k8s-troubleshooting-lab-o9-app
 ```
 
 Use:
@@ -65,11 +65,11 @@ args: ["echo application started; sleep 3600"]
 
 ### OOMKilled
 
-Increase the memory limit or reduce `outOfMemory.allocationMiB`:
+Increase the memory limit or reduce `webapi-app.allocationMiB`:
 
 ```bash
 helm upgrade lab ./k8s-troubleshooting-lab -n troubleshooting-lab \
-  --set outOfMemory.memoryLimit=256Mi
+  --set webapi-app.memoryLimit=256Mi
 ```
 
 ### Missing PVC

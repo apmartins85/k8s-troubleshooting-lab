@@ -1,8 +1,8 @@
-{{- if .Values.crashLoop.enabled }}
+{{- if .Values.o9-app.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "k8s-troubleshooting-lab.fullname" . }}-crashloop
+  name: {{ include "k8s-troubleshooting-lab.fullname" . }}-o9-app
   namespace: {{ include "k8s-troubleshooting-lab.namespace" . }}
   labels:
     {{- include "k8s-troubleshooting-lab.labels" . | nindent 4 }}
@@ -21,11 +21,11 @@ spec:
     spec:
       containers:
         - name: o9-app
-          image: {{ .Values.crashLoop.image | quote }}
+          image: {{ .Values.o9-app.image | quote }}
           command: ["sh", "-c"]
           args:
             - >-
-              echo {{ .Values.crashLoop.message | quote }};
+              echo {{ .Values.o9-app.message | quote }};
               echo "Configuration file /etc/example/app.conf not found";
               sleep 3;
               exit 1

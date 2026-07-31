@@ -1,4 +1,4 @@
-{{- if .Values.missingPvc.enabled }}
+{{- if .Values.mongoDb.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,15 +21,15 @@ spec:
     spec:
       containers:
         - name: mongodb
-          image: {{ .Values.missingPvc.image | quote }}
+          image: {{ .Values.mongoDb.image | quote }}
           ports:
             - name: mongodb
               containerPort: 27017
           volumeMounts:
             - name: mongodb-data
-              mountPath: {{ .Values.missingPvc.mountPath }}
+              mountPath: {{ .Values.mongoDb.mountPath }}
       volumes:
         - name: mongodb-data
           persistentVolumeClaim:
-            claimName: {{ .Values.missingPvc.claimName }}
+            claimName: {{ .Values.mongoDb.claimName }}
 {{- end }}

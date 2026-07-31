@@ -3,9 +3,9 @@ Troubleshooting lab installed.
 Expected states after 1-2 minutes:
   - nginx: Running / Ready
   - redis: Running / Ready
-  - o9-app: CrashLoopBackOff
-  - webapi-app: CrashLoopBackOff, previous termination reason OOMKilled
-  - mongodb: Pending because PVC {{ .Values.missingPvc.claimName }} does not exist
+  - o9-app: o9-appBackOff
+  - webapi-app: o9-appBackOff, previous termination reason OOMKilled
+  - mongodb: Pending because PVC {{ .Values.mongoDb.claimName }} does not exist
 
 Useful commands:
   kubectl get pods -n {{ .Release.Namespace }}
@@ -19,7 +19,7 @@ To fix the missing PVC exercise:
   apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: {{ .Values.missingPvc.claimName }}
+    name: {{ .Values.mongoDb.claimName }}
   spec:
     accessModes: [ReadWriteOnce]
     resources:
